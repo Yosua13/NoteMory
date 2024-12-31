@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:note_mory/presentation/home_page.dart';
 import 'package:note_mory/presentation/register_page.dart';
 import 'package:note_mory/providers/user_provider.dart';
@@ -21,6 +22,17 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Color statusBarColor = Colors.white;
+    // const Brightness iconBrighness = Brightness.dark;
+
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: statusBarColor,
+    //     statusBarIconBrightness: iconBrighness,
+    //     systemNavigationBarColor: statusBarColor,
+    //     systemNavigationBarIconBrightness: iconBrighness,
+    //   ),
+    // );
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -126,7 +138,7 @@ class LoginPageState extends State<LoginPage> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF584200),
+                backgroundColor: const Color(0xFFFFB300),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -162,7 +174,11 @@ class LoginPageState extends State<LoginPage> {
               },
               child: const Text(
                 'Login',
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -278,7 +294,7 @@ class LoginPageState extends State<LoginPage> {
         });
 
         return AlertDialog(
-          backgroundColor: const Color(0xFFFFE082),
+          backgroundColor: const Color(0xFFFFB300),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),

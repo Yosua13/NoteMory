@@ -259,7 +259,7 @@ class RegisterPageState extends State<RegisterPage> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFe6c068),
+                backgroundColor: const Color(0xFFFFB300),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -509,7 +509,7 @@ class RegisterPageState extends State<RegisterPage> {
         });
 
         return AlertDialog(
-          backgroundColor: const Color(0xFFFFE082),
+          backgroundColor: const Color(0xFFFFB300),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
