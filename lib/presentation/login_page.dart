@@ -21,6 +21,11 @@ class LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Color statusBarColor = Colors.white;
     // const Brightness iconBrighness = Brightness.dark;
