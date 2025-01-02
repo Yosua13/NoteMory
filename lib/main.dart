@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:note_mory/presentation/home_page.dart';
 import 'package:note_mory/presentation/onboarding.dart';
+import 'package:note_mory/providers/note_provider.dart';
 import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (context) => NoteProvider()),
     ],
     child: const MyApp(),
   ));
@@ -18,15 +20,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light,
-      ),
-    );
     return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+      ),
       debugShowCheckedModeBanner: false,
       home: const Onboarding(),
     );
