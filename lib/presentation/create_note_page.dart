@@ -72,6 +72,10 @@ class CreateNotePageState extends State<CreateNotePage> {
                 await context.read<NoteProvider>().addNote(newNote);
 
                 showSuccessDialog('Note has been saved successfully!');
+                print('DEBUG: ID: ${newNote.id}');
+                print('DEBUG: Title: ${newNote.title}');
+                print('DEBUG: Content: ${newNote.content}');
+                print('DEBUG: Date: ${newNote.date}');
 
                 _titleController.clear();
                 _contentController.clear();

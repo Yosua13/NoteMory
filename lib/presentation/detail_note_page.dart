@@ -26,11 +26,17 @@ class DetailNotePageState extends State<DetailNotePage> {
   }
 
   Future<void> _saveEditedNote() async {
+    final notes = Provider.of<NoteProvider>(context, listen: false).notes;
     final updatedNote = Note(
+      id: widget.note.id,
       title: _titleController!.text,
       content: _contentController!.text,
       date: formattedDate,
     );
+
+    print('DEBUG: Editing note with ID: ${widget.note.id}');
+    print('DEBUG: Original Note: ${widget.note.toMap()}');
+    print('DEBUG: Updated Note: ${updatedNote.toMap()}');
 
     await Provider.of<NoteProvider>(context, listen: false)
         .editNote(widget.note, updatedNote);
@@ -39,8 +45,17 @@ class DetailNotePageState extends State<DetailNotePage> {
   }
 
   Future<void> _deleteNote() async {
+    final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+
+    print('DEBUG: Deleting note with ID: ${widget.note.id}');
+    print('DEBUG: Note to delete: ${widget.note.toMap()}');
+
     await Provider.of<NoteProvider>(context, listen: false)
         .deleteNote(widget.note);
+
+    final notes = noteProvider.notes;
+
+    if (notes.isEmpty) print('DEBUG: Notes after delete: No notes available');
 
     Navigator.pop(context);
   }
