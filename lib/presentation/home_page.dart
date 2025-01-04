@@ -149,8 +149,8 @@ class HomePageState extends State<HomePage> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF440C0C),
               Color(0xFF000000),
+              Color(0xFF440C0C),
             ],
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
@@ -188,6 +188,10 @@ class HomePageState extends State<HomePage> {
                         builder: (context) => DetailNotePage(note: note),
                       ),
                     );
+                    print('DEBUG: ID: ${note.id}');
+                    print('DEBUG: Title: ${note.title}');
+                    print('DEBUG: Content: ${note.content}');
+                    print('DEBUG: Date: ${note.date}');
                   },
                   child: Card(
                     color: const Color(0xFFFFB300),

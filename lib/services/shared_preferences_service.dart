@@ -29,7 +29,7 @@ class SharedPreferencesService {
 
     for (int i = 0; i < notesList.length; i++) {
       Map<String, dynamic> noteMap = json.decode(notesList[i]);
-      if (noteMap['date'] == originalNote.date) {
+      if (noteMap['id'] == originalNote.id) {
         notesList[i] = json.encode(updatedNote.toMap());
         break;
       }
@@ -45,7 +45,7 @@ class SharedPreferencesService {
 
     notesList.removeWhere((noteData) {
       Map<String, dynamic> noteMap = json.decode(noteData);
-      return noteMap['date'] == noteToDelete.date;
+      return noteMap['id'] == noteToDelete.id;
     });
 
     await prefs.setStringList('notes', notesList);

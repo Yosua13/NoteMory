@@ -25,7 +25,7 @@ class NoteProvider with ChangeNotifier {
   /// Mengedit catatan
   Future<void> editNote(Note originalNote, Note updatedNote) async {
     await _sharedPreferencesService.editNote(originalNote, updatedNote);
-    int index = _notes.indexWhere((note) => note.date == originalNote.date);
+    int index = _notes.indexWhere((note) => note.id == originalNote.id);
     if (index != -1) {
       _notes[index] = updatedNote;
       notifyListeners();
@@ -35,7 +35,7 @@ class NoteProvider with ChangeNotifier {
   /// Menghapus catatan
   Future<void> deleteNote(Note noteToDelete) async {
     await _sharedPreferencesService.deleteNote(noteToDelete);
-    _notes.removeWhere((note) => note.date == noteToDelete.date);
+    _notes.removeWhere((note) => note.id == noteToDelete.id);
     notifyListeners();
   }
 
