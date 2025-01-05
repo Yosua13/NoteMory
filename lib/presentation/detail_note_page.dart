@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_mory/models/note.dart';
@@ -16,13 +18,45 @@ class DetailNotePage extends StatefulWidget {
 class DetailNotePageState extends State<DetailNotePage> {
   TextEditingController? _titleController;
   TextEditingController? _contentController;
-  final formattedDate = DateFormat('dd-MM-yyyy, HH:mm').format(DateTime.now());
+
+  int _currentLength = 0;
+  void _updateCurrentLength() {
+    setState(() {
+      _currentLength =
+          _titleController!.text.length + _contentController!.text.length;
+    });
+  }
+
+  late Timer _timer;
+  String _currentDate = '';
+  String _formatCurrentDate() {
+    return DateFormat('dd-MM-yyyy, HH:mm:ss').format(DateTime.now());
+  }
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.note.title);
     _contentController = TextEditingController(text: widget.note.content);
+    _currentDate = widget.note.textLenght!;
+
+    _titleController!.addListener(_updateCurrentLength);
+    _contentController!.addListener(_updateCurrentLength);
+
+    _currentDate = _formatCurrentDate();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _currentDate = _formatCurrentDate();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _titleController!.dispose();
+    _contentController!.dispose();
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<void> _saveEditedNote() async {
@@ -31,7 +65,7 @@ class DetailNotePageState extends State<DetailNotePage> {
       id: widget.note.id,
       title: _titleController!.text,
       content: _contentController!.text,
-      date: formattedDate,
+      date: _currentDate,
     );
 
     print('DEBUG: Editing note with ID: ${widget.note.id}');
@@ -146,6 +180,28 @@ class DetailNotePageState extends State<DetailNotePage> {
                   fontSize: 28,
                   color: Colors.black,
                 ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    _currentDate,
+                    style: TextStyle(color: Colors.grey.shade500),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "|",
+                    style: TextStyle(color: Colors.grey.shade500),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "$_currentLength",
+                    style: TextStyle(color: Colors.grey.shade500),
+                  ),
+                ],
               ),
               TextFormField(
                 controller: _contentController,

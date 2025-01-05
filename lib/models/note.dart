@@ -3,13 +3,9 @@ class Note {
   final String? title;
   final String? content;
   final String? date;
+  final String? textLenght;
 
-  Note({
-    this.id,
-    this.title,
-    this.content,
-    this.date,
-  });
+  Note({this.id, this.title, this.content, this.date, this.textLenght});
 
   /// Konversi Note menjadi Map untuk disimpan di SharedPreferences
   Map<String, dynamic> toMap() {
@@ -18,6 +14,7 @@ class Note {
       'title': title,
       'content': content,
       'date': date,
+      'textLenght': textLenght
     };
   }
 
@@ -28,6 +25,7 @@ class Note {
       title: map['title'],
       content: map['content'],
       date: map['date'],
+      textLenght: map['textLenght'],
     );
   }
 }

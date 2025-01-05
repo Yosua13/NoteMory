@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_mory/models/note.dart';
@@ -13,13 +15,26 @@ class CreateNotePage extends StatefulWidget {
 }
 
 class CreateNotePageState extends State<CreateNotePage> {
-  final _titleController = TextEditingController();
-  final _contentController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-  final formattedDate = DateFormat('dd-MM-yyyy, HH:mm').format(DateTime.now());
   final uuid = Uuid();
+
+  int _currentLength = 0;
+  void _updateCurrentLength() {
+    setState(() {
+      _currentLength =
+          _titleController.text.length + _contentController.text.length;
+    });
+  }
+
+  late Timer _timer;
+  String _currentDate = '';
+  String _formatCurrentDate() {
+    return DateFormat('dd-MM-yyyy, HH:mm:ss').format(DateTime.now());
+  }
 
   void showSuccessDialog(String message) {
     showDialog(
@@ -50,6 +65,28 @@ class CreateNotePageState extends State<CreateNotePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _titleController.addListener(_updateCurrentLength);
+    _contentController.addListener(_updateCurrentLength);
+
+    _currentDate = _formatCurrentDate();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _currentDate = _formatCurrentDate();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,10 +101,12 @@ class CreateNotePageState extends State<CreateNotePage> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 Note newNote = Note(
-                    id: uuid.v4(),
-                    title: _titleController.text,
-                    content: _contentController.text,
-                    date: formattedDate);
+                  id: uuid.v4(),
+                  title: _titleController.text,
+                  content: _contentController.text,
+                  date: _currentDate,
+                  textLenght: "$_currentLength",
+                );
 
                 await context.read<NoteProvider>().addNote(newNote);
 
@@ -90,6 +129,8 @@ class CreateNotePageState extends State<CreateNotePage> {
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
                   controller: _titleController,
@@ -113,6 +154,28 @@ class CreateNotePageState extends State<CreateNotePage> {
                     fontSize: 28,
                     color: Colors.black,
                   ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      _currentDate,
+                      style: TextStyle(color: Colors.grey.shade500),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "|",
+                      style: TextStyle(color: Colors.grey.shade500),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      '$_currentLength',
+                      style: TextStyle(color: Colors.grey.shade500),
+                    ),
+                  ],
                 ),
                 TextFormField(
                   controller: _contentController,
