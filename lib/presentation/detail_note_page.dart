@@ -38,7 +38,6 @@ class DetailNotePageState extends State<DetailNotePage> {
     super.initState();
     _titleController = TextEditingController(text: widget.note.title);
     _contentController = TextEditingController(text: widget.note.content);
-    _currentDate = widget.note.textLenght!;
 
     _titleController!.addListener(_updateCurrentLength);
     _contentController!.addListener(_updateCurrentLength);

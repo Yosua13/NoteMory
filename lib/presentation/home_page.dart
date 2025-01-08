@@ -21,7 +21,6 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Load notes when the page is initialized
     Future.microtask(() => context.read<NoteProvider>().loadNotes());
   }
 

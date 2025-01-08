@@ -36,34 +36,6 @@ class CreateNotePageState extends State<CreateNotePage> {
     return DateFormat('dd-MM-yyyy, HH:mm:ss').format(DateTime.now());
   }
 
-  void showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Success'),
-          backgroundColor: const Color(0xFFFFB300),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -110,11 +82,12 @@ class CreateNotePageState extends State<CreateNotePage> {
 
                 await context.read<NoteProvider>().addNote(newNote);
 
-                showSuccessDialog('Note has been saved successfully!');
                 print('DEBUG: ID: ${newNote.id}');
                 print('DEBUG: Title: ${newNote.title}');
                 print('DEBUG: Content: ${newNote.content}');
                 print('DEBUG: Date: ${newNote.date}');
+
+                Navigator.of(context).pop();
 
                 _titleController.clear();
                 _contentController.clear();
