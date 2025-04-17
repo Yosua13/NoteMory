@@ -43,7 +43,7 @@ class DetailNotePageState extends State<DetailNotePage> {
     _contentController!.addListener(_updateCurrentLength);
 
     _currentDate = _formatCurrentDate();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _currentDate = _formatCurrentDate();
       });
@@ -67,9 +67,9 @@ class DetailNotePageState extends State<DetailNotePage> {
       date: _currentDate,
     );
 
-    print('DEBUG: Editing note with ID: ${widget.note.id}');
-    print('DEBUG: Original Note: ${widget.note.toMap()}');
-    print('DEBUG: Updated Note: ${updatedNote.toMap()}');
+    debugPrint('DEBUG: Editing note with ID: ${widget.note.id}');
+    debugPrint('DEBUG: Original Note: ${widget.note.toMap()}');
+    debugPrint('DEBUG: Updated Note: ${updatedNote.toMap()}');
 
     await Provider.of<NoteProvider>(context, listen: false)
         .editNote(widget.note, updatedNote);
@@ -80,15 +80,17 @@ class DetailNotePageState extends State<DetailNotePage> {
   Future<void> _deleteNote() async {
     final noteProvider = Provider.of<NoteProvider>(context, listen: false);
 
-    print('DEBUG: Deleting note with ID: ${widget.note.id}');
-    print('DEBUG: Note to delete: ${widget.note.toMap()}');
+    debugPrint('DEBUG: Deleting note with ID: ${widget.note.id}');
+    debugPrint('DEBUG: Note to delete: ${widget.note.toMap()}');
 
     await Provider.of<NoteProvider>(context, listen: false)
         .deleteNote(widget.note);
 
     final notes = noteProvider.notes;
 
-    if (notes.isEmpty) print('DEBUG: Notes after delete: No notes available');
+    if (notes.isEmpty) {
+      debugPrint('DEBUG: Notes after delete: No notes available');
+    }
 
     Navigator.pop(context);
   }

@@ -6,6 +6,7 @@ import 'package:note_mory/models/user.dart';
 import 'package:note_mory/presentation/login_page.dart';
 import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -27,6 +28,8 @@ class RegisterPageState extends State<RegisterPage> {
 
   bool _isPasswordVisibleP = false;
   bool _isPasswordVisibleCP = false;
+
+  final uuid = Uuid();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -267,6 +270,7 @@ class RegisterPageState extends State<RegisterPage> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   User newUser = User(
+                    id: uuid.v4(),
                     username: _usernameController.text,
                     email: _emailController.text,
                     phoneNumber: _phoneNumberController.text,
@@ -276,6 +280,14 @@ class RegisterPageState extends State<RegisterPage> {
                   );
                   Provider.of<UserProvider>(context, listen: false)
                       .registerUser(newUser);
+
+                  debugPrint("id: ${newUser.id}");
+                  debugPrint("username: ${newUser.username}");
+                  debugPrint("email: ${newUser.email}");
+                  debugPrint("phonenumber: ${newUser.phoneNumber}");
+                  debugPrint("birth: ${newUser.birth}");
+                  debugPrint("gender: ${newUser.gender}");
+                  debugPrint("password: ${newUser.password}");
 
                   showSuccessDialog(context, 'Register Success',
                       'Congratulations, You have successfully registered');
@@ -347,6 +359,7 @@ class RegisterPageState extends State<RegisterPage> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
@@ -394,6 +407,7 @@ class RegisterPageState extends State<RegisterPage> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
@@ -437,6 +451,7 @@ class RegisterPageState extends State<RegisterPage> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),

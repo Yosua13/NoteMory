@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:note_mory/presentation/home_page.dart';
 import 'package:note_mory/presentation/register_page.dart';
 import 'package:note_mory/providers/user_provider.dart';
@@ -148,10 +147,10 @@ class LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   bool isLoginSuccessful =
-                      Provider.of<UserProvider>(context, listen: false)
+                      await Provider.of<UserProvider>(context, listen: false)
                           .loginUser(
                               _emailController.text, _passwordController.text);
 
@@ -237,6 +236,7 @@ class LoginPageState extends State<LoginPage> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),

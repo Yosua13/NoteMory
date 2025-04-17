@@ -6,7 +6,6 @@ import 'package:note_mory/presentation/login_page.dart';
 import 'package:note_mory/providers/note_provider.dart';
 import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,12 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  final uuid = Uuid();
-
   @override
   void initState() {
     super.initState();
     Future.microtask(() => context.read<NoteProvider>().loadNotes());
+    Provider.of<NoteProvider>(context, listen: false).loadNotes();
+    Provider.of<UserProvider>(context, listen: false).loginUser('', '');
   }
 
   @override
@@ -187,10 +186,10 @@ class HomePageState extends State<HomePage> {
                         builder: (context) => DetailNotePage(note: note),
                       ),
                     );
-                    print('DEBUG: ID: ${note.id}');
-                    print('DEBUG: Title: ${note.title}');
-                    print('DEBUG: Content: ${note.content}');
-                    print('DEBUG: Date: ${note.date}');
+                    debugPrint('DEBUG: ID: ${note.id}');
+                    debugPrint('DEBUG: Title: ${note.title}');
+                    debugPrint('DEBUG: Content: ${note.content}');
+                    debugPrint('DEBUG: Date: ${note.date}');
                   },
                   child: Card(
                     color: const Color(0xFFFFB300),

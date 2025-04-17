@@ -2,24 +2,38 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:note_mory/models/note.dart';
 
-class SharedPreferencesService {
-  // Menyimpan catatan ke SharedPreferences
-  Future<void> saveNote(List<Note> notes) async {
+class SharedPreferencesServiceNotes {
+  /// Menyimpan catatan ke SharedPreferences
+  Future<void> saveNote(String userId, List<Note> notes) async {
     final prefs = await SharedPreferences.getInstance();
-    List<String> notesList =
-        notes.map((note) => json.encode(note.toMap())).toList();
-    await prefs.setStringList('notes', notesList);
+    List<String> allNotesList = prefs.getStringList('notes') ?? [];
+
+    /// Decode semua catatan
+    List<Note> allNotes = allNotesList
+        .map((noteData) => Note.fromMap(json.decode(noteData)))
+        .toList();
+
+    /// Hapus catatan lama milik user ini
+    allNotes.removeWhere((note) => note.userId == userId);
+
+    /// Tambah catatan baru milik user ini
+    allNotes.addAll(notes);
+
+    /// Simpan semua catatan kembali
+    List<String> updatedNotesList =
+        allNotes.map((note) => json.encode(note.toMap())).toList();
+    await prefs.setStringList('notes', updatedNotesList);
   }
 
   /// Mengambil catatan dari SharedPreferences
-  Future<List<Note>> loadNotes() async {
+  Future<List<Note>> loadNotes({required String userId}) async {
     final prefs = await SharedPreferences.getInstance();
     List<String> notesList = prefs.getStringList('notes') ?? [];
 
-    return notesList.map((noteData) {
-      Map<String, dynamic> noteMap = json.decode(noteData);
-      return Note.fromMap(noteMap);
-    }).toList();
+    return notesList
+        .map((noteData) => Note.fromMap(json.decode(noteData)))
+        .where((note) => note.userId == userId)
+        .toList();
   }
 
   /// Mengedit catatan

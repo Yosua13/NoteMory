@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:note_mory/models/note.dart';
-import 'package:note_mory/services/shared_preferences_service.dart';
+import 'package:note_mory/providers/user_provider.dart';
+import 'package:note_mory/services/shared_preferences_service_notes.dart';
 
 class NoteProvider with ChangeNotifier {
-  final SharedPreferencesService _sharedPreferencesService =
-      SharedPreferencesService();
-  List<Note> _notes = [];
+  final SharedPreferencesServiceNotes _sharedPreferencesService =
+      SharedPreferencesServiceNotes();
 
+  final UserProvider userProvider;
+
+  NoteProvider({required this.userProvider});
+
+  List<Note> _notes = [];
   List<Note> get notes => _notes;
 
   /// Mengambil catatan yang disimpan dari SharedPreferences
   Future<void> loadNotes() async {
-    _notes = await _sharedPreferencesService.loadNotes();
-    notifyListeners();
+    final userId = userProvider.user?.id;
+    if (userId != null) {
+      _notes = await _sharedPreferencesService.loadNotes(userId: userId);
+      notifyListeners();
+    }
   }
 
   /// Menambah catatan baru
   Future<void> addNote(Note note) async {
     _notes.add(note);
-    await _sharedPreferencesService.saveNote(_notes);
+    await _sharedPreferencesService.saveNote(note.userId!, _notes);
     notifyListeners();
   }
 

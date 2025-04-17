@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_mory/models/note.dart';
+import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:note_mory/providers/note_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -43,7 +44,7 @@ class CreateNotePageState extends State<CreateNotePage> {
     _contentController.addListener(_updateCurrentLength);
 
     _currentDate = _formatCurrentDate();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _currentDate = _formatCurrentDate();
       });
@@ -72,8 +73,22 @@ class CreateNotePageState extends State<CreateNotePage> {
             ),
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
+                final user = context.read<UserProvider>().user;
+                debugPrint("DEBUG USER: ${user?.id}");
+
+                final userId = context.read<UserProvider>().user?.id;
+                debugPrint("coba $userId");
+
+                if (user == null || user.id == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('User belum login')),
+                  );
+                  return;
+                }
+
                 Note newNote = Note(
                   id: uuid.v4(),
+                  userId: userId,
                   title: _titleController.text,
                   content: _contentController.text,
                   date: _currentDate,
@@ -82,10 +97,12 @@ class CreateNotePageState extends State<CreateNotePage> {
 
                 await context.read<NoteProvider>().addNote(newNote);
 
-                print('DEBUG: ID: ${newNote.id}');
-                print('DEBUG: Title: ${newNote.title}');
-                print('DEBUG: Content: ${newNote.content}');
-                print('DEBUG: Date: ${newNote.date}');
+                debugPrint('DEBUG: ID: ${newNote.id}');
+                debugPrint('DEBUG UserId: ${newNote.userId}');
+                debugPrint('DEBUG: Title: ${newNote.title}');
+                debugPrint('DEBUG: Content: ${newNote.content}');
+                debugPrint('DEBUG: Date: ${newNote.date}');
+                debugPrint('DEBUG: UserID: ${newNote.userId}');
 
                 Navigator.of(context).pop();
 
