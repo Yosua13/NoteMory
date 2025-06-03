@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "note_mory",
+            "name": "Note Mory",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "note_mory (profile mode)",
+            "name": "Note Mory (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "note_mory (release mode)",
+            "name": "Note Mory (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
