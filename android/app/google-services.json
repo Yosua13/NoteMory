@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105123014410",
+    "project_id": "note-mory",
+    "storage_bucket": "note-mory.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105123014410:android:3cdb93877414a7c9963cf3",
+        "android_client_info": {
+          "package_name": "com.yosua.note_mory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ0hKXBrY47XKMOEMXx4C4Y8uEmxJ5BMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
