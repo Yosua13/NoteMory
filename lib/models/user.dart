@@ -6,6 +6,7 @@ class User {
   final String? birth;
   final String? gender;
   final String? password;
+  final bool? isGoogleUser;
 
   User({
     this.id,
@@ -15,6 +16,7 @@ class User {
     this.birth,
     this.gender,
     this.password,
+    this.isGoogleUser,
   });
 
   /// Convert User object ke Map<String, dynamic>
@@ -27,6 +29,7 @@ class User {
       'birth': birth,
       'gender': gender,
       'password': password,
+      'isGoogleUser': isGoogleUser,
     };
   }
 
@@ -40,6 +43,7 @@ class User {
       birth: map['birth'],
       gender: map['gender'],
       password: map['password'],
+      isGoogleUser: map['isGoogleUser'],
     );
   }
 }

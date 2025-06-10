@@ -3,6 +3,7 @@ import 'package:note_mory/models/note.dart';
 import 'package:note_mory/presentation/create_note_page.dart';
 import 'package:note_mory/presentation/detail_note_page.dart';
 import 'package:note_mory/presentation/login_page.dart';
+import 'package:note_mory/providers/google_sign_in_provider.dart';
 import 'package:note_mory/providers/note_provider.dart';
 import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +89,9 @@ class HomePageState extends State<HomePage> {
                         onPressed: () {
                           Provider.of<UserProvider>(context, listen: false)
                               .logoutUser();
+                          Provider.of<GoogleSignInProvider>(context,
+                                  listen: false)
+                              .logoutUser(context);
                           Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,

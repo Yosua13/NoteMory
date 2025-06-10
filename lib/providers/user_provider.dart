@@ -44,6 +44,7 @@ class UserProvider with ChangeNotifier {
 
     for (var user in allUsers) {
       if (user.email == email && user.password == password) {
+        print("${user.email} dan ${user.password} loginUser provider");
         _user = user;
         await _sharedPreferencesServiceUsers.setLoggedInUser(user.id!);
         notifyListeners();

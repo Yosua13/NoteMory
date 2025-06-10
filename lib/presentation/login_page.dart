@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:note_mory/presentation/home_page.dart';
 import 'package:note_mory/presentation/register_page.dart';
+import 'package:note_mory/providers/google_sign_in_provider.dart';
 import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -136,6 +138,55 @@ class LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 48),
 
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+              minimumSize: const Size(double.infinity, 50),
+            ),
+            onPressed: () async {
+              final provider =
+                  Provider.of<GoogleSignInProvider>(context, listen: false);
+
+              try {
+                // Lakukan login Google
+                bool isSuccess = await provider.googleLogin(context);
+
+                // Jika login berhasil
+                if (isSuccess && context.mounted) {
+                  showSuccessDialog(context, 'Login Success',
+                      'Welcome to My Church! God Bless You :)');
+
+                  // Delay sebentar untuk dialog sukses
+                  Future.delayed(const Duration(milliseconds: 1500), () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  });
+                } else {
+                  // Jika gagal
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("Login gagal. Silakan coba lagi.")),
+                  );
+                }
+              } catch (e) {
+                // Tangkap dan tampilkan error
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Login gagal: $e")),
+                );
+              }
+            },
+            icon: const FaIcon(
+              FontAwesomeIcons.google,
+              color: Colors.red,
+            ),
+            label: const Text("Sign In with Google"),
+          ),
+
+          const SizedBox(height: 48),
+
           // Login Button
           SizedBox(
             height: 50,
@@ -169,7 +220,7 @@ class LoginPageState extends State<LoginPage> {
                         );
                       },
                     );
-                  } else {
+                  } else if (isLoginSuccessful == false) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Invalid credentials')),
                     );
