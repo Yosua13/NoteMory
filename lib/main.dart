@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:note_mory/firebase_options.dart';
 import 'package:note_mory/presentation/onboarding.dart';
 import 'package:note_mory/providers/google_sign_in_provider.dart';
 import 'package:note_mory/providers/note_provider.dart';

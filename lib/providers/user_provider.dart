@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:note_mory/models/user.dart';
 import 'package:note_mory/services/shared_preferences_service_users.dart';
@@ -15,7 +17,35 @@ class UserProvider with ChangeNotifier {
   Future<void> registerUser(User newUser) async {
     _user = newUser;
     await _sharedPreferencesServiceUsers.saveUser(newUser);
+    await registerUserFromFirebase(newUser);
     notifyListeners();
+  }
+
+  Future<void> registerUserFromFirebase(User user) async {
+    try {
+      // Register ke Firebase Auth
+      auth.UserCredential credential =
+          await auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: user.email!,
+        password: user.password!,
+      );
+
+      // Simpan data user ke Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(credential.user!.uid)
+          .set({
+        'username': user.username,
+        'email': user.email,
+        'phoneNumber': user.phoneNumber,
+        'birth': user.birth,
+        'gender': user.gender,
+      });
+
+      print("Registrasi berhasil dan aman");
+    } catch (e) {
+      print("Gagal registrasi: $e");
+    }
   }
 
   /// Update user info
@@ -52,11 +82,67 @@ class UserProvider with ChangeNotifier {
       }
     }
 
-    return false;
+    try {
+      // Login pakai Firebase Auth
+      final credential = await auth.FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      // Ambil UID
+      final uid = credential.user!.uid;
+
+      // Ambil data user dari Firestore
+      final userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data()!;
+        _user = User(
+          id: uid,
+          username: data['username'],
+          email: data['email'],
+          phoneNumber: data['phoneNumber'],
+          birth: data['birth'],
+          gender: data['gender'],
+          password: '',
+        );
+
+        notifyListeners();
+        return true;
+      }
+
+      return false; // Data user tidak ditemukan di Firestore
+    } catch (e) {
+      print('Login error: $e');
+      return false;
+    }
   }
 
   ///Load user
   Future<void> loadUser() async {
+    final currentUser = auth.FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data()!;
+        _user = User(
+          id: currentUser.uid,
+          username: data['username'],
+          email: data['email'],
+          phoneNumber: data['phoneNumber'],
+          birth: data['birth'],
+          gender: data['gender'],
+          password: '',
+        );
+
+        notifyListeners();
+      }
+    }
+
     _user = await _sharedPreferencesServiceUsers.loadUser();
     notifyListeners();
   }
@@ -67,6 +153,7 @@ class UserProvider with ChangeNotifier {
     // await _sharedPreferencesServiceUsers.removeUser();
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('loggedInUserId');
+    await auth.FirebaseAuth.instance.signOut();
     notifyListeners();
   }
 }
