@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:note_mory/presentation/home_page.dart';
 import 'package:note_mory/presentation/register_page.dart';
 import 'package:note_mory/providers/google_sign_in_provider.dart';
+import 'package:note_mory/providers/onboarding_provider.dart';
 import 'package:note_mory/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -154,6 +155,10 @@ class LoginPageState extends State<LoginPage> {
 
                 // Jika login berhasil
                 if (isSuccess && context.mounted) {
+                  // onboarding
+                  await Provider.of<OnboardingProvider>(context, listen: false)
+                      .setLoggedIn(true);
+
                   showSuccessDialog(context, 'Login Success',
                       'Welcome to My Church! God Bless You :)');
 
@@ -206,6 +211,11 @@ class LoginPageState extends State<LoginPage> {
                               _emailController.text, _passwordController.text);
 
                   if (isLoginSuccessful) {
+                    // onboarding
+                    await Provider.of<OnboardingProvider>(context,
+                            listen: false)
+                        .setLoggedIn(true);
+
                     // Navigate to HomePage if login is successful
                     showSuccessDialog(context, 'Login Success',
                         'Welcome to My Church! God Bless You :)');

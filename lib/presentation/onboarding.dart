@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:note_mory/presentation/login_page.dart';
+import 'package:note_mory/providers/onboarding_provider.dart';
+import 'package:provider/provider.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
@@ -100,15 +102,21 @@ class Onboarding extends StatelessWidget {
           ),
         ),
       ],
-      onDone: () {
+      onDone: () async {
         /// Navigasi ke halaman login atau halaman utama setelah onboarding selesai
+        await Provider.of<OnboardingProvider>(context, listen: false)
+            .setFirstTime(false);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       },
-      onSkip: () {
+      onSkip: () async {
         /// Navigasi ke halaman login atau halaman utama jika "Skip" ditekan
+        await Provider.of<OnboardingProvider>(context, listen: false)
+            .setFirstTime(false);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
