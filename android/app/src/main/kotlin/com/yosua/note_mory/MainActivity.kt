@@ -1,4 +1,4 @@
-package com.example.note_mory
+package com.yosua.note_mory
 
 import io.flutter.embedding.android.FlutterActivity
 
