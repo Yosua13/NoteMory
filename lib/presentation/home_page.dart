@@ -21,12 +21,37 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.microtask(() => context.read<NoteProvider>().loadNotes());
-    Provider.of<NoteProvider>(context, listen: false).loadNotes();
-    Provider.of<UserProvider>(context, listen: false).loginUser('', '');
+  }
+
+  String getFirstName(String? fullName) {
+    if (fullName == null || fullName.trim().isEmpty) {
+      return "Guest";
+    }
+    return fullName.trim().split(' ').first;
+  }
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 5 && hour < 12) {
+      return 'Selamat Pagi';
+    } else if (hour >= 12 && hour < 15) {
+      return 'Selamat Siang';
+    } else if (hour >= 15 && hour < 18) {
+      return 'Selamat Sore';
+    } else {
+      return 'Selamat Malam';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final fullName = userProvider.user?.username;
+    final firstName = getFirstName(fullName);
+
+    // Tambahkan greeting dinamis juga
+    final greeting = _getGreeting();
+
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -41,9 +66,9 @@ class HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        title: const Text(
-          'NoteMory',
-          style: TextStyle(
+        title: Text(
+          '$greeting $firstName',
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 26,
             color: Colors.white,
@@ -96,9 +121,11 @@ class HomePageState extends State<HomePage> {
                           await Provider.of<UserProvider>(context,
                                   listen: false)
                               .logoutUser();
+
                           await Provider.of<GoogleSignInProvider>(context,
                                   listen: false)
                               .logoutUser(context);
+
                           Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,

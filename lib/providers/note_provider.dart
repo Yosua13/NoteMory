@@ -5,13 +5,13 @@ import 'package:note_mory/providers/user_provider.dart';
 import 'package:note_mory/services/shared_preferences_service_notes.dart';
 
 class NoteProvider with ChangeNotifier {
+  final UserProvider userProvider;
+
+  NoteProvider({required this.userProvider});
   final SharedPreferencesServiceNotes _sharedPreferencesService =
       SharedPreferencesServiceNotes();
 
-  final UserProvider userProvider;
   final NoteWithFirebaseService _firebaseService = NoteWithFirebaseService();
-
-  NoteProvider({required this.userProvider});
 
   List<Note> _notes = [];
   List<Note> get notes => _notes;
