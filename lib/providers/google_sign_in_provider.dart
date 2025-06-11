@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -46,7 +47,15 @@ class GoogleSignInProvider extends ChangeNotifier {
           isGoogleUser: true,
         );
 
+        // Simpan ke SharedPreferences
         await userProvider.registerUser(userModel);
+
+        // Simpan ke Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .set(userModel.toMap());
+
         notifyListeners();
         return true;
       }

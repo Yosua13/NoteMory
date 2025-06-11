@@ -30,16 +30,18 @@ class UserProvider with ChangeNotifier {
         password: user.password!,
       );
 
+      // Update ID user dari hasil credential
+      user.id = credential.user!.uid;
+
       // Simpan data user ke Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(credential.user!.uid)
-          .set({
+      await FirebaseFirestore.instance.collection('users').doc(user.id).set({
+        'id': user.id,
         'username': user.username,
         'email': user.email,
         'phoneNumber': user.phoneNumber,
         'birth': user.birth,
         'gender': user.gender,
+        'isGoogleUser': user.isGoogleUser ?? false,
       });
 
       print("Registrasi berhasil dan aman");
