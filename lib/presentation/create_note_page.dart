@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_mory/models/note.dart';
@@ -73,19 +74,25 @@ class CreateNotePageState extends State<CreateNotePage> {
             ),
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                final user = context.read<UserProvider>().user;
-                debugPrint("DEBUG USER: ${user?.id}");
+                // Cek dari UserProvider dulu (manual login)
+                final localUser = context.read<UserProvider>().user;
+                String? userId = localUser?.id;
 
-                final userId = context.read<UserProvider>().user?.id;
-                debugPrint("coba $userId");
+                // Jika localUser null, coba ambil dari FirebaseAuth (Google login)
+                if (userId == null) {
+                  final firebaseUser = FirebaseAuth.instance.currentUser;
+                  userId = firebaseUser?.uid;
+                }
 
-                if (user == null || user.id == null) {
+                // Kalau tetap null artinya user memang belum login
+                if (userId == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('User belum login')),
                   );
                   return;
                 }
 
+                // Buat note baru
                 Note newNote = Note(
                   id: uuid.v4(),
                   userId: userId,
@@ -97,6 +104,7 @@ class CreateNotePageState extends State<CreateNotePage> {
 
                 await context.read<NoteProvider>().addNote(newNote);
 
+                // Debugging log
                 debugPrint('DEBUG: ID: ${newNote.id}');
                 debugPrint('DEBUG UserId: ${newNote.userId}');
                 debugPrint('DEBUG: Title: ${newNote.title}');
@@ -104,8 +112,10 @@ class CreateNotePageState extends State<CreateNotePage> {
                 debugPrint('DEBUG: Date: ${newNote.date}');
                 debugPrint('DEBUG: UserID: ${newNote.userId}');
 
+                // Tutup halaman create note
                 Navigator.of(context).pop();
 
+                // Clear form
                 _titleController.clear();
                 _contentController.clear();
               }

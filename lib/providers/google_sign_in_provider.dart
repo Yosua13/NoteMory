@@ -11,7 +11,7 @@ class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;
   GoogleSignInAccount? get user => _user;
 
-  bool _isSigningIn = false;
+  final bool _isSigningIn = false;
   bool get isSigningIn => _isSigningIn;
 
   Future<bool> googleLogin(BuildContext context) async {

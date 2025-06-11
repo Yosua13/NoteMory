@@ -62,9 +62,11 @@ class DetailNotePageState extends State<DetailNotePage> {
     final notes = Provider.of<NoteProvider>(context, listen: false).notes;
     final updatedNote = Note(
       id: widget.note.id,
+      userId: widget.note.userId,
       title: _titleController!.text,
       content: _contentController!.text,
       date: _currentDate,
+      textLenght: widget.note.textLenght,
     );
 
     debugPrint('DEBUG: Editing note with ID: ${widget.note.id}');

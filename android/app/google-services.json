@@ -12,7 +12,20 @@
           "package_name": "com.yosua.note_mory"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "105123014410-f171rj85tnh9eho85dbntaeoctjq42as.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yosua.note_mory",
+            "certificate_hash": "ee15f8caba18dc2640ef0a3af0b142a186b2b479"
+          }
+        },
+        {
+          "client_id": "105123014410-eeeh1dv36b6g5tte84f0pt7fbo2iddfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDZ0hKXBrY47XKMOEMXx4C4Y8uEmxJ5BMo"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105123014410-eeeh1dv36b6g5tte84f0pt7fbo2iddfh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "105123014410-333fjegdmnhovikdrlhg0jr6pjcs834a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.noteMory"
+              }
+            }
+          ]
         }
       }
     }
