@@ -64,7 +64,7 @@ class LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                "Join Churchers",
+                "Welcome to Note Mory",
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 8),
               const Text(
-                "Find an interesting church.",
+                "Make Your Memory",
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -159,8 +159,8 @@ class LoginPageState extends State<LoginPage> {
                   await Provider.of<OnboardingProvider>(context, listen: false)
                       .setLoggedIn(true);
 
-                  showSuccessDialog(context, 'Login Success',
-                      'Welcome to My Church! God Bless You :)');
+                  showSuccessDialog(
+                      context, 'Login Success', 'Welcome to Note Mory!');
 
                   // Delay sebentar untuk dialog sukses
                   Future.delayed(const Duration(milliseconds: 1500), () {
@@ -217,8 +217,8 @@ class LoginPageState extends State<LoginPage> {
                         .setLoggedIn(true);
 
                     // Navigate to HomePage if login is successful
-                    showSuccessDialog(context, 'Login Success',
-                        'Welcome to My Church! God Bless You :)');
+                    showSuccessDialog(
+                        context, 'Login Success', 'Welcome to Note Mory!');
                     Future.delayed(
                       const Duration(milliseconds: 1500),
                       () {
