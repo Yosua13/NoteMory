@@ -1,6 +1,8 @@
 # 📓 Note Mory
 NoteMory is a note-taking app to easily store ideas, tasks, memories, simple, secure, and helps you remember important things anytime. All notes can be organized by category. Perfect for recording important moments and creative ideas. ✨
 
+## 🔑 Flutter, Firebase
+
 ## 🎉 Flutter Version 3.29.0
 
 ## Screen Shot
